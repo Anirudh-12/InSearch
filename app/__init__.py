@@ -1,0 +1,1 @@
+# InSearch app package

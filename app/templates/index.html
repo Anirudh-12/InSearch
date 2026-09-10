@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InSearch — Remote SWE & CS Internships for India</title>
+  <meta name="description" content="Find remote Software Engineering and Computer Science internships from companies worldwide that students in India can apply for." />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">InSearch<span class="logo-tagline"> — Remote SWE Internships</span></a>
+    </div>
+  </header>
+
+  <!-- ── Hero / Search ──────────────────────────────── -->
+  <section class="hero" aria-label="Search internships">
+    <h1 class="hero-title">Find Remote CS &amp; SWE Internships</h1>
+    <p class="hero-subtitle">Discover remote software engineering internships you can apply to from India</p>
+
+    <form class="search-form" id="search-form" role="search" onsubmit="return false;">
+      <div class="search-input-wrapper">
+        <input
+          type="search"
+          id="search-input"
+          class="search-input"
+          placeholder="Search internships — e.g. python backend, rust systems, ML engineer…"
+          autocomplete="off"
+          aria-label="Search internships"
+        />
+      </div>
+      <button type="submit" class="search-btn" id="search-btn">Search</button>
+    </form>
+
+    <div class="popular-searches" aria-label="Popular searches">
+      <span class="popular-label">Popular:</span>
+      <button class="popular-chip" data-query="python">Python</button>
+      <button class="popular-chip" data-query="backend">Backend</button>
+      <button class="popular-chip" data-query="c++">C++</button>
+      <button class="popular-chip" data-query="rust systems">Rust</button>
+      <button class="popular-chip" data-query="machine learning">AI / ML</button>
+      <button class="popular-chip" data-query="go">Go</button>
+      <button class="popular-chip" data-query="java">Java</button>
+      <button class="popular-chip" data-query="full stack">Full Stack</button>
+    </div>
+  </section>
+
+  <!-- ── Main Layout ────────────────────────────────── -->
+  <main>
+    <!-- Mobile filter toggle -->
+    <div style="max-width:1200px;margin:0 auto;padding:var(--space-4) var(--space-6) 0;">
+      <button class="filter-toggle-btn" id="filter-toggle-btn" aria-expanded="false" aria-controls="filters-sidebar">
+        ⚙ Filters
+      </button>
+    </div>
+
+    <div class="main-layout">
+
+      <!-- ── Sidebar Filters ─────────────────────── -->
+      <aside class="filters-sidebar" id="filters-sidebar" aria-label="Filter internships">
+        <div class="filters-title">
+          Filters
+          <button class="filters-reset" id="filters-reset-btn">Reset all</button>
+        </div>
+
+        <!-- Sort -->
+        <div class="filter-group">
+          <div class="filter-group-label">Sort by</div>
+          <select class="sort-select" id="sort-select" aria-label="Sort results">
+            <option value="relevance">Relevance</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="deadline">Deadline</option>
+          </select>
+        </div>
+
+        <!-- India Eligibility -->
+        <div class="filter-group">
+          <div class="filter-group-label">India eligibility</div>
+          <ul class="filter-checkbox-list" id="eligibility-filter">
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="elig-likely" value="likely" />
+              <label for="elig-likely">✓ Likely from India</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="elig-unclear" value="unclear" />
+              <label for="elig-unclear">? India eligibility unclear</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="elig-unlikely" value="unlikely" />
+              <label for="elig-unlikely">✕ Likely not from India</label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Compensation -->
+        <div class="filter-group">
+          <div class="filter-group-label">Compensation</div>
+          <ul class="filter-checkbox-list" id="compensation-filter">
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="comp-paid" value="paid" />
+              <label for="comp-paid">Paid</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="comp-unpaid" value="unpaid" />
+              <label for="comp-unpaid">Unpaid</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="comp-unknown" value="unknown" />
+              <label for="comp-unknown">Not specified</label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Internship type -->
+        <div class="filter-group">
+          <div class="filter-group-label">Internship type</div>
+          <ul class="filter-checkbox-list" id="internship-type-filter">
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="itype-summer" value="summer" />
+              <label for="itype-summer">Summer</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="itype-winter" value="winter" />
+              <label for="itype-winter">Winter</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="itype-general" value="general" />
+              <label for="itype-general">General</label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Employment type -->
+        <div class="filter-group">
+          <div class="filter-group-label">Employment type</div>
+          <ul class="filter-checkbox-list" id="employment-type-filter">
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="etype-full" value="full_time" />
+              <label for="etype-full">Full-time</label>
+            </li>
+            <li class="filter-checkbox-item">
+              <input type="checkbox" id="etype-part" value="part_time" />
+              <label for="etype-part">Part-time</label>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Skills -->
+        <div class="filter-group">
+          <div class="filter-group-label">Skills</div>
+          <ul class="filter-checkbox-list" id="skills-filter">
+            <!-- Populated by JS via /api/filters -->
+          </ul>
+        </div>
+      </aside>
+
+      <!-- ── Results ─────────────────────────────── -->
+      <section class="results-area" aria-label="Search results" aria-live="polite">
+        <div class="results-header">
+          <p class="results-count" id="results-count">Loading internships…</p>
+        </div>
+
+        <!-- Loading state -->
+        <div id="state-loading" class="state-container" hidden>
+          <div class="spinner" role="status" aria-label="Loading"></div>
+          <p class="state-body">Searching internships…</p>
+        </div>
+
+        <!-- Empty state -->
+        <div id="state-empty" class="state-container" hidden>
+          <div class="state-icon" aria-hidden="true">🔍</div>
+          <h2 class="state-title">No internships found</h2>
+          <p class="state-body">Try removing a filter or searching for a broader term like "software engineer" or "python".</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="state-error" class="state-container" hidden>
+          <div class="state-icon" aria-hidden="true">⚠️</div>
+          <h2 class="state-title">Something went wrong</h2>
+          <p class="state-body" id="error-message">Could not load internships. Please try again.</p>
+        </div>
+
+        <!-- Results list -->
+        <ul class="internship-list" id="internship-list" aria-label="Internship results"></ul>
+
+        <!-- Pagination -->
+        <nav class="pagination" id="pagination" aria-label="Pagination"></nav>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

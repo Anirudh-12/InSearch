@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Internship Details — InSearch</title>
+  <meta name="description" id="page-desc" content="View internship details on InSearch." />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-logo">InSearch<span class="logo-tagline"> — Remote SWE Internships</span></a>
+    </div>
+  </header>
+
+  <!-- ── Detail Page ────────────────────────────────── -->
+  <main class="detail-page" id="detail-page" aria-label="Internship details">
+
+    <!-- Loading state -->
+    <div id="state-loading" class="state-container">
+      <div class="spinner" role="status" aria-label="Loading"></div>
+      <p class="state-body">Loading internship details…</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="state-error" class="state-container" hidden>
+      <div class="state-icon" aria-hidden="true">⚠️</div>
+      <h1 class="state-title">Internship not found</h1>
+      <p class="state-body" id="error-message">This internship may have been removed or the link is invalid.</p>
+      <br />
+      <a href="/" class="btn-primary">← Back to search</a>
+    </div>
+
+    <!-- Detail content (hidden until loaded) -->
+    <div id="detail-content" hidden>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/" id="back-link">← Back to results</a>
+      </nav>
+
+      <article class="detail-card">
+
+        <!-- Header -->
+        <header class="detail-header">
+          <h1 class="detail-title" id="detail-title">—</h1>
+          <p class="detail-company" id="detail-company">—</p>
+
+          <div class="detail-badges" id="detail-badges"></div>
+
+          <a
+            id="detail-apply-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="detail-apply-btn"
+          >
+            View Original Listing ↗
+          </a>
+        </header>
+
+        <!-- Description -->
+        <section class="detail-section" id="desc-section">
+          <h2 class="detail-section-title">About this internship</h2>
+          <p class="detail-description" id="detail-description">—</p>
+        </section>
+
+        <!-- Skills -->
+        <section class="detail-section" id="skills-section">
+          <h2 class="detail-section-title">Skills</h2>
+          <div class="skills-row" id="detail-skills"></div>
+        </section>
+
+        <!-- Details grid -->
+        <section class="detail-section">
+          <h2 class="detail-section-title">Details</h2>
+          <div class="detail-grid">
+            <div class="detail-field">
+              <div class="detail-field-label">Company website</div>
+              <div class="detail-field-value" id="detail-company-url">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Remote</div>
+              <div class="detail-field-value" id="detail-remote">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Location</div>
+              <div class="detail-field-value" id="detail-location">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">India eligibility</div>
+              <div class="detail-field-value" id="detail-eligibility">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Internship type</div>
+              <div class="detail-field-value" id="detail-internship-type">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Employment type</div>
+              <div class="detail-field-value" id="detail-employment-type">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Compensation</div>
+              <div class="detail-field-value" id="detail-compensation">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Experience required</div>
+              <div class="detail-field-value" id="detail-experience">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Posted</div>
+              <div class="detail-field-value" id="detail-posted">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Application deadline</div>
+              <div class="detail-field-value" id="detail-deadline">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Source</div>
+              <div class="detail-field-value" id="detail-source">—</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Apply footer -->
+        <footer style="padding-top: var(--space-6); border-top: 1px solid var(--clr-border);">
+          <a
+            id="detail-apply-btn-bottom"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="detail-apply-btn"
+          >
+            Apply / View Original Listing ↗
+          </a>
+          <p style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--clr-text-muted);">
+            InSearch is an aggregator. Clicking will take you to the original listing on the source site.
+          </p>
+        </footer>
+
+      </article>
+    </div>
+  </main>
+
+  <script src="/static/js/internship.js"></script>
+</body>
+</html>
