@@ -321,8 +321,12 @@ def _extract_location(opportunity: dict) -> str | None:
     """Build a human-readable location string."""
     # Check city / country in address_with_country_logo
     address_info = opportunity.get("address_with_country_logo") or {}
-    city = address_info.get("city") or ""
-    country = address_info.get("country") or ""
+    city_raw = address_info.get("city") or ""
+    country_raw = address_info.get("country") or ""
+    
+    city = city_raw.get("name") if isinstance(city_raw, dict) else city_raw
+    country = country_raw.get("name") if isinstance(country_raw, dict) else country_raw
+
     region = (opportunity.get("region") or "").strip()
 
     if region.lower() in ("online", "work from home", "wfh", "remote"):

@@ -18,68 +18,67 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Seed helper
-# ---------------------------------------------------------------------------
-
-
-def _seed_database(db):
-    """Insert seed internships on first startup."""
-    from app.models.internship import Internship
-    from app.scrapers.seed_source import SeedSource
-    from app.services.deduplication import compute_fingerprint, find_by_fingerprint
-    from app.services.search import search_service
-
-    source = SeedSource()
-    records = source.fetch()
-
-    inserted = 0
-    for record in records:
-        fp = compute_fingerprint(record.company_name, record.title, record.location)
-        if find_by_fingerprint(db, fp):
-            continue
-        internship = Internship(
-            **{k: v for k, v in record.model_dump().items() if k not in ("skills", "tags")},
-            fingerprint=fp,
-        )
-        internship.skills = record.skills
-        internship.tags = record.tags
-        db.add(internship)
-        db.flush()
-        search_service.index_internship(db, internship)
-        inserted += 1
-
-    db.commit()
-    logger.info(f"Seeded {inserted} internships.")
-
-
-# ---------------------------------------------------------------------------
 # Lifespan (startup / shutdown)
 # ---------------------------------------------------------------------------
+
+
+import asyncio
+from starlette.concurrency import run_in_threadpool
+
+def _run_all_scrapers():
+    """Sync function to run scrapers in a background thread."""
+    from app.database import SessionLocal
+    from app.scrapers.unstop import UnstopSource
+    from app.services.ingestion import ingest_source
+    
+    # Use max_pages=10 for periodic fresh fetches
+    source = UnstopSource(max_pages=10)
+    db = SessionLocal()
+    try:
+        logger.info("[Background] Running Unstop scraper...")
+        result = ingest_source(source, db)
+        logger.info(f"[Background] Finished Unstop: Inserted {result.inserted}, Updated {result.updated}")
+    except Exception as e:
+        logger.error(f"[Background] Scraper failed: {e}")
+    finally:
+        db.close()
+
+
+async def periodic_scraper():
+    """Background task that runs scrapers periodically."""
+    # Wait a few seconds after startup before the first run
+    await asyncio.sleep(10)
+    while True:
+        try:
+            await run_in_threadpool(_run_all_scrapers)
+        except asyncio.CancelledError:
+            logger.info("Periodic scraper task cancelled.")
+            break
+        except Exception as e:
+            logger.error(f"Error in periodic scraper: {e}")
+            
+        # Wait 4 hours before the next run
+        await asyncio.sleep(4 * 3600)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application startup / shutdown lifecycle."""
     logger.info("Starting InSearch…")
+    scraper_task = None
     try:
         Base.metadata.create_all(bind=engine)
         create_fts_table(engine)
-
-        db = SessionLocal()
-        try:
-            from app.models.internship import Internship
-
-            count = db.query(Internship).count()
-            if count == 0:
-                logger.info("Database is empty — loading seed data…")
-                _seed_database(db)
-        finally:
-            db.close()
+            
+        # Start the periodic background scraper
+        scraper_task = asyncio.create_task(periodic_scraper())
     except Exception as e:
         logger.warning(f"Startup error (non-fatal in tests): {e}")
 
     yield
 
+    if scraper_task:
+        scraper_task.cancel()
     logger.info("InSearch shutdown.")
 
 
