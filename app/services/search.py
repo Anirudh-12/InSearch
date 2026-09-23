@@ -54,11 +54,6 @@ class SearchService(ABC):
         """Sync the search index from the main table."""
         ...
 
-    @abstractmethod
-    def index_internship(self, db: Session, internship: Internship) -> None:
-        """Add or update a single record in the search index."""
-        ...
-
 
 # ---------------------------------------------------------------------------
 # SQLite FTS5 implementation
@@ -146,7 +141,7 @@ class FTS5SearchService(SearchService):
         base_sql = """
             SELECT i.id, bm25(internships_fts) as rank
             FROM internships_fts
-            JOIN internships i ON internships_fts.id = i.id
+            JOIN internships i ON internships_fts.rowid = i.id
             WHERE internships_fts MATCH :fts_query
               AND i.is_active = 1
         """
@@ -333,31 +328,14 @@ class FTS5SearchService(SearchService):
         """Rebuild FTS5 index from all active internships."""
         db.execute(text("DELETE FROM internships_fts"))
         db.execute(text("""
-            INSERT INTO internships_fts(id, title, company_name, description, skills, tags, location)
+            INSERT INTO internships_fts(rowid, title, company_name, description, skills, tags, location)
             SELECT id, title, company_name,
                    COALESCE(description, ''),
                    COALESCE(skills, ''),
                    COALESCE(tags, ''),
                    COALESCE(location, '')
             FROM internships
-            WHERE is_active = 1
         """))
-        db.commit()
-
-    def index_internship(self, db: Session, internship: Internship) -> None:
-        """Insert or replace a single record in the FTS index."""
-        db.execute(text("""
-            INSERT OR REPLACE INTO internships_fts(id, title, company_name, description, skills, tags, location)
-            VALUES (:id, :title, :company_name, :description, :skills, :tags, :location)
-        """), {
-            "id": internship.id,
-            "title": internship.title,
-            "company_name": internship.company_name,
-            "description": internship.description or "",
-            "skills": internship._skills or "",
-            "tags": internship._tags or "",
-            "location": internship.location or "",
-        })
         db.commit()
 
 

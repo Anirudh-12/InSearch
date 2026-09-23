@@ -36,15 +36,14 @@ def get_db():
 def create_fts_table(db_engine=None):
     """Create the SQLite FTS5 virtual table for full-text search.
 
-    This is idempotent — safe to call multiple times.
-    FTS5 content= tables mirror the content table columns by actual name.
+    This uses triggers to automatically keep the FTS index in sync with the
+    internships table, preventing rowid mismatch corruption.
     """
     target = db_engine or engine
     with target.connect() as conn:
         conn.execute(text("""
             CREATE VIRTUAL TABLE IF NOT EXISTS internships_fts
             USING fts5(
-                id UNINDEXED,
                 title,
                 company_name,
                 description,
@@ -54,5 +53,27 @@ def create_fts_table(db_engine=None):
                 content='internships',
                 content_rowid='id'
             )
+        """))
+        
+        # Triggers to keep FTS index up to date
+        conn.execute(text("""
+            CREATE TRIGGER IF NOT EXISTS internships_ai AFTER INSERT ON internships BEGIN
+              INSERT INTO internships_fts(rowid, title, company_name, description, skills, tags, location)
+              VALUES (new.id, new.title, new.company_name, coalesce(new.description,''), coalesce(new.skills,''), coalesce(new.tags,''), coalesce(new.location,''));
+            END;
+        """))
+        conn.execute(text("""
+            CREATE TRIGGER IF NOT EXISTS internships_ad AFTER DELETE ON internships BEGIN
+              INSERT INTO internships_fts(internships_fts, rowid, title, company_name, description, skills, tags, location)
+              VALUES('delete', old.id, old.title, old.company_name, coalesce(old.description,''), coalesce(old.skills,''), coalesce(old.tags,''), coalesce(old.location,''));
+            END;
+        """))
+        conn.execute(text("""
+            CREATE TRIGGER IF NOT EXISTS internships_au AFTER UPDATE ON internships BEGIN
+              INSERT INTO internships_fts(internships_fts, rowid, title, company_name, description, skills, tags, location)
+              VALUES('delete', old.id, old.title, old.company_name, coalesce(old.description,''), coalesce(old.skills,''), coalesce(old.tags,''), coalesce(old.location,''));
+              INSERT INTO internships_fts(rowid, title, company_name, description, skills, tags, location)
+              VALUES (new.id, new.title, new.company_name, coalesce(new.description,''), coalesce(new.skills,''), coalesce(new.tags,''), coalesce(new.location,''));
+            END;
         """))
         conn.commit()

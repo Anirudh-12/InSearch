@@ -649,7 +649,7 @@ ul { list-style: none; }
 
 /* ─── Detail Page ─────────────────────────────────────────── */
 .detail-page {
-  max-width: 820px;
+  max-width: var(--content-max);
   margin: var(--space-8) auto;
   padding: 0 var(--space-6);
 }
@@ -676,7 +676,13 @@ ul { list-style: none; }
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-6);
   border-bottom: 1px solid var(--clr-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
 }
+
+.detail-header-main { flex: 1; }
 
 .detail-title {
   font-size: var(--text-2xl);
@@ -697,7 +703,6 @@ ul { list-style: none; }
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-bottom: var(--space-5);
 }
 
 .detail-apply-btn {
@@ -713,8 +718,15 @@ ul { list-style: none; }
   border: none;
   text-decoration: none;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 .detail-apply-btn:hover { background: var(--clr-accent-hover); color: #fff; text-decoration: none; }
+
+.detail-body {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: var(--space-10);
+}
 
 .detail-section { margin-bottom: var(--space-6); }
 
@@ -730,13 +742,20 @@ ul { list-style: none; }
 .detail-description {
   font-size: var(--text-base);
   color: var(--clr-text-primary);
-  line-height: 1.75;
+  line-height: 1.7;
   white-space: pre-wrap;
 }
 
+.detail-sidebar {
+  background: #f9fafb;
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--clr-border);
+}
+
 .detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
 }
 
@@ -771,6 +790,11 @@ ul { list-style: none; }
   .filters-sidebar.open { display: block; }
 
   .filter-toggle-btn { display: block; }
+
+  .detail-body {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
 }
 
 @media (max-width: 600px) {
@@ -781,6 +805,8 @@ ul { list-style: none; }
   .search-btn { border-radius: var(--radius-md); width: 100%; }
   .main-layout { padding: var(--space-4); gap: var(--space-4); }
   .card-header { flex-direction: column; }
-  .detail-page { padding: 0 var(--space-4); }
+  .detail-page { padding: 0 var(--space-4); margin: var(--space-4) auto; }
   .detail-card { padding: var(--space-5); }
+  .detail-header { flex-direction: column; align-items: stretch; }
+  .detail-apply-btn { width: 100%; justify-content: center; }
 }

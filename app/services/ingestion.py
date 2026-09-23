@@ -27,7 +27,6 @@ from app.services.deduplication import (
     find_by_source_url,
 )
 from app.services.eligibility import classify as classify_eligibility
-from app.services.search import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +157,6 @@ def _process_record(
             existing.is_active = record.is_active
             existing.last_verified_at = utcnow()
             db.flush()
-            search_service.index_internship(db, existing)
             result.updated += 1
         else:
             result.skipped += 1
@@ -187,6 +185,5 @@ def _process_record(
 
     db.add(internship)
     db.flush()  # Assigns the id before FTS indexing
-    search_service.index_internship(db, internship)
 
     result.inserted += 1

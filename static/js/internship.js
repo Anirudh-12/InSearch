@@ -63,10 +63,10 @@ function renderDetail(job) {
     `<span class="skill-chip">🌐 Remote</span>`,
   ].filter(Boolean).join('');
 
-  // Apply buttons
+  // Apply button
   const sourceUrl = job.source_url || '#';
-  document.getElementById('detail-apply-btn').href = sourceUrl;
-  document.getElementById('detail-apply-btn-bottom').href = sourceUrl;
+  const applyBtn = document.getElementById('detail-apply-btn');
+  if (applyBtn) applyBtn.href = sourceUrl;
 
   // Description
   const descEl = document.getElementById('detail-description');
