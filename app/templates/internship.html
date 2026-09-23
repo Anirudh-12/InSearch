@@ -6,6 +6,7 @@
   <title id="page-title">Internship Details — InSearch</title>
   <meta name="description" id="page-desc" content="View internship details on InSearch." />
   <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/theme.js"></script>
 </head>
 <body>
 
@@ -13,6 +14,27 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="site-logo">InSearch<span class="logo-tagline"> — Remote SWE Internships</span></a>
+      <form class="header-search-form" action="/" method="GET" role="search">
+        <input
+          type="search"
+          name="q"
+          class="header-search-input"
+          placeholder="Search internships…"
+          autocomplete="off"
+          aria-label="Search internships"
+        />
+        <button type="submit" class="header-search-btn" aria-label="Submit search">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 

@@ -6,6 +6,7 @@
   <title>InSearch — Remote SWE & CS Internships for India</title>
   <meta name="description" content="Find remote Software Engineering and Computer Science internships from companies worldwide that students in India can apply for." />
   <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/theme.js"></script>
 </head>
 <body>
 
@@ -13,38 +14,47 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="site-logo">InSearch<span class="logo-tagline"> — Remote SWE Internships</span></a>
+      <form class="header-search-form" id="search-form" action="/" method="GET" role="search">
+        <input
+          type="search"
+          name="q"
+          id="search-input"
+          class="header-search-input"
+          placeholder="Search internships…"
+          autocomplete="off"
+          aria-label="Search internships"
+        />
+        <button type="submit" id="search-btn" class="header-search-btn" aria-label="Submit search">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="icon-moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 
   <!-- ── Hero / Search ──────────────────────────────── -->
   <section class="hero" aria-label="Search internships">
-    <h1 class="hero-title">Find Remote CS &amp; SWE Internships</h1>
-    <p class="hero-subtitle">Discover remote software engineering internships you can apply to from India</p>
+    <div class="hero-inner">
+      <h1 class="hero-title">Find Remote CS &amp; SWE Internships</h1>
+      <p class="hero-subtitle">Discover remote software engineering internships you can apply to from India.</p>
 
-    <form class="search-form" id="search-form" role="search" onsubmit="return false;">
-      <div class="search-input-wrapper">
-        <input
-          type="search"
-          id="search-input"
-          class="search-input"
-          placeholder="Search internships — e.g. python backend, rust systems, ML engineer…"
-          autocomplete="off"
-          aria-label="Search internships"
-        />
-      </div>
-      <button type="submit" class="search-btn" id="search-btn">Search</button>
-    </form>
-
-    <div class="popular-searches" aria-label="Popular searches">
-      <span class="popular-label">Popular:</span>
-      <button class="popular-chip" data-query="python">Python</button>
+      <div class="popular-searches" aria-label="Popular searches">
+        <button class="popular-chip" data-query="python">Python</button>
       <button class="popular-chip" data-query="backend">Backend</button>
       <button class="popular-chip" data-query="c++">C++</button>
       <button class="popular-chip" data-query="rust systems">Rust</button>
       <button class="popular-chip" data-query="machine learning">AI / ML</button>
       <button class="popular-chip" data-query="go">Go</button>
       <button class="popular-chip" data-query="java">Java</button>
-      <button class="popular-chip" data-query="full stack">Full Stack</button>
+        <button class="popular-chip" data-query="full stack">Full Stack</button>
+      </div>
     </div>
   </section>
 
